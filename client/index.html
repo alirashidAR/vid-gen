@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Generation & Grading</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 40px 20px;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2d3748;
+      margin-bottom: 40px;
+      font-size: 2.2rem;
+      font-weight: 600;
+    }
+
+    h2 {
+      color: #4a5568;
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    .form-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .form-section {
+      background: #f8fafc;
+      padding: 32px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-weight: 500;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+    }
+
+    input::placeholder {
+      color: #a0aec0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px 32px;
+      background: #4299e1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      min-width: 200px;
+    }
+
+    button:hover {
+      background: #3182ce;
+    }
+
+    .result {
+      margin-top: 40px;
+      padding: 24px;
+      background: #f0fff4;
+      border: 1px solid #9ae6b4;
+      border-radius: 8px;
+    }
+
+    .result h2 {
+      color: #2f855a;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .result p {
+      margin-bottom: 12px;
+    }
+
+    .result p:last-child {
+      margin-bottom: 0;
+    }
+
+    .result strong {
+      margin-right: 8px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .form-container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      
+      .container {
+        padding: 24px;
+      }
+      
+      .form-section {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Video Generation & Grading</h1>
+    
+    <form id="videoForm">
+      <div class="form-container">
+        <div class="form-section">
+          <h2>Video Details</h2>
+          
+          <div class="input-group">
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName" name="productName" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="tagline">Tagline</label>
+            <input type="text" id="tagline" name="tagline" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="brandPalette">Brand Palette</label>
+            <input type="text" id="brandPalette" name="brandPalette" placeholder="#FFFFFF, #000000">
+          </div>
+          
+          <div class="input-group">
+            <label for="dimensions">Dimensions</label>
+            <input type="text" id="dimensions" name="dimensions" placeholder='{"width":1920,"height":1080}' required>
+          </div>
+          
+          <div class="input-group">
+            <label for="duration">Duration (seconds)</label>
+            <input type="number" id="duration" name="duration" min="1" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="ctaText">CTA Text</label>
+            <input type="text" id="ctaText" name="ctaText" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="logoUrl">Logo URL</label>
+            <input type="url" id="logoUrl" name="logoUrl" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="productVideoUrl">Product Video URL</label>
+            <input type="url" id="productVideoUrl" name="productVideoUrl" required>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Scoring Criteria</h2>
+          
+          <div class="input-group">
+            <label for="bgFgSeparation">Background-Foreground Separation</label>
+            <input type="number" id="bgFgSeparation" name="bgFgSeparation" min="0" max="10" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="brandAdherence">Brand Guideline Adherence</label>
+            <input type="number" id="brandAdherence" name="brandAdherence" min="0" max="10" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="creativity">Creativity & Visual Appeal</label>
+            <input type="number" id="creativity" name="creativity" min="0" max="10" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="productFocus">Product Focus</label>
+            <input type="number" id="productFocus" name="productFocus" min="0" max="10" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="ctaEffectiveness">CTA Effectiveness</label>
+            <input type="number" id="ctaEffectiveness" name="ctaEffectiveness" min="0" max="10" required>
+          </div>
+          
+          <div class="input-group">
+            <label for="audienceRelevance">Audience Relevance</label>
+            <input type="number" id="audienceRelevance" name="audienceRelevance" min="0" max="10" required>
+          </div>
+        </div>
+      </div>
+      
+      <div class="button-container">
+        <button type="submit">Generate & Grade Video</button>
+      </div>
+    </form>
+    
+    <div id="result" class="result hidden">
+      <h2>Result</h2>
+      <p id="status"></p>
+      <p><strong>Video URL:</strong> <a id="videoUrl" href="#" target="_blank"></a></p>
+      <p><strong>Scoring:</strong> <span id="scoring"></span></p>
+      <p><strong>Metadata:</strong> <span id="metadata"></span></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("videoForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const videoRequest = {
+        video_details: {
+          product_name: e.target.productName.value,
+          tagline: e.target.tagline.value,
+          brand_palette: e.target.brandPalette.value.split(",").map(c => c.trim()),
+          dimensions: JSON.parse(e.target.dimensions.value),
+          duration: parseInt(e.target.duration.value),
+          cta_text: e.target.ctaText.value,
+          logo_url: e.target.logoUrl.value,
+          product_video_url: e.target.productVideoUrl.value
+        }
+      };
+
+      const videoGradingRequest = {
+        file_url: "placeholder",
+        scoring_criteria: {
+          background_foreground_separation: parseInt(e.target.bgFgSeparation.value),
+          brand_guideline_adherence: parseInt(e.target.brandAdherence.value),
+          creativity_visual_appeal: parseInt(e.target.creativity.value),
+          product_focus: parseInt(e.target.productFocus.value),
+          call_to_action: parseInt(e.target.ctaEffectiveness.value),
+          audience_relevance: parseInt(e.target.audienceRelevance.value)
+        }
+      };
+
+      try {
+        const response = await fetch("http://localhost:8000/generate_video", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ video_request: videoRequest, video_grading_request: videoGradingRequest })
+        });
+
+        const result = await response.json();
+        document.getElementById("status").innerText = result.status;
+        document.getElementById("videoUrl").innerText = result.video_url;
+        document.getElementById("videoUrl").href = result.video_url;
+        document.getElementById("scoring").innerText = JSON.stringify(result.scoring);
+        document.getElementById("metadata").innerText = JSON.stringify(result.metadata);
+        document.getElementById("result").classList.remove("hidden");
+      } catch (error) {
+        alert("Error generating video. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>

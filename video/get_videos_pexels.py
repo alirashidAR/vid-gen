@@ -2,6 +2,7 @@ import os
 import requests
 import asyncio
 
+
 async def fetch_and_download_media(query,path):
     # Define URLs and headers for Pexels API
     video_url = "https://api.pexels.com/videos/search"

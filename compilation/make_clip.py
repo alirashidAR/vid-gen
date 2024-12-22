@@ -78,7 +78,7 @@ def stitch_video(duration, end_text, end_text_duration, width=1920, height=1080)
     # Write the final video file
     final_video.write_videofile(output_file, codec="libx264", audio_codec="aac", fps=24)
 
-    return "output_video.mp4"
+    return output_file
 
 # # Example usage
 # if __name__ == "__main__":

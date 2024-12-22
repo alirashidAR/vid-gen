@@ -4,3 +4,5 @@ boto3
 pydantic
 typing-extensions
 edge-tts
+google-generativeai
+python-dotenv
