@@ -192,6 +192,10 @@ Once the server is running, you can test the endpoints using a tool like **Postm
 
 ---
 
+### System Architecture
+![Untitled-2024-12-17-1856](https://github.com/user-attachments/assets/9ca0d8ed-c511-4528-a9f0-70d1c8d6ff40)
+
+
 This markdown document includes:
 
 - **API Endpoints**: Clear definitions of the video generation and grading APIs.
