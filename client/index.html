@@ -385,7 +385,7 @@
       };
 
       try {
-        const response = await fetch("http://localhost:8000/generate_video", {
+        const response = await fetch("http://3.110.196.232:8000/generate_video", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ video_request: videoRequest, video_grading_request: videoGradingRequest })

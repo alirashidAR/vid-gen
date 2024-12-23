@@ -6,3 +6,8 @@ typing-extensions
 edge-tts
 google-generativeai
 python-dotenv
+fastapi
+uvicorn
+huggingface-hub
+httpx
+Pillow==10.2.0
