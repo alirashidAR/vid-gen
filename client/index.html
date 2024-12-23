@@ -44,38 +44,30 @@
       font-weight: 500;
     }
 
-    .form-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 40px;
-      margin-bottom: 30px;
-    }
-
     .form-section {
       background: #f8fafc;
       padding: 32px;
       border-radius: 12px;
       border: 1px solid #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
     }
 
     .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      margin-bottom: 20px;
     }
 
     label {
+      display: block;
       font-weight: 500;
       color: #4a5568;
+      margin-bottom: 8px;
       font-size: 0.95rem;
     }
 
     input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 12px;
       border: 1px solid #cbd5e0;
       border-radius: 6px;
       font-size: 0.95rem;
@@ -104,7 +96,7 @@
 
     .button-container {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 24px;
     }
 
     button {
@@ -116,26 +108,70 @@
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: all 0.2s;
       min-width: 200px;
     }
 
     button:hover {
       background: #3182ce;
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loading-content {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3182ce;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .result {
-      margin-top: 40px;
+      display: none;
+      margin-top: 32px;
       padding: 24px;
       background: #f0fff4;
       border: 1px solid #9ae6b4;
       border-radius: 8px;
+      animation: fadeIn 0.3s ease;
     }
 
-    .result h2 {
+    .result h3 {
       color: #2f855a;
-      margin-top: 0;
       margin-bottom: 16px;
+      font-size: 1.5rem;
     }
 
     .result p {
@@ -147,26 +183,51 @@
     }
 
     .result strong {
+      display: inline-block;
+      min-width: 100px;
+      color: #2f855a;
       margin-right: 8px;
     }
 
+    .result a {
+      color: #4299e1;
+      text-decoration: none;
+    }
+
+    .result a:hover {
+      text-decoration: underline;
+    }
+
     .hidden {
-      display: none;
+      display: none !important;
+    }
+
+    .visible {
+      display: flex !important;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Responsive design */
     @media (max-width: 768px) {
-      .form-container {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-      
       .container {
         padding: 24px;
       }
       
       .form-section {
         padding: 24px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      button {
+        width: 100%;
+        margin-bottom: 12px;
       }
     }
   </style>
@@ -176,126 +237,150 @@
     <h1>Video Generation & Grading</h1>
     
     <form id="videoForm">
-      <div class="form-container">
-        <div class="form-section">
-          <h2>Video Details</h2>
-          
-          <div class="input-group">
-            <label for="productName">Product Name</label>
-            <input type="text" id="productName" name="productName" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="tagline">Tagline</label>
-            <input type="text" id="tagline" name="tagline" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="brandPalette">Brand Palette</label>
-            <input type="text" id="brandPalette" name="brandPalette" placeholder="#FFFFFF, #000000">
-          </div>
-          
-          <div class="input-group">
-            <label for="dimensions">Dimensions</label>
-            <input type="text" id="dimensions" name="dimensions" placeholder='{"width":1920,"height":1080}' required>
-          </div>
-          
-          <div class="input-group">
-            <label for="duration">Duration (seconds)</label>
-            <input type="number" id="duration" name="duration" min="1" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="ctaText">CTA Text</label>
-            <input type="text" id="ctaText" name="ctaText" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="logoUrl">Logo URL</label>
-            <input type="url" id="logoUrl" name="logoUrl" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="productVideoUrl">Product Video URL</label>
-            <input type="url" id="productVideoUrl" name="productVideoUrl" required>
-          </div>
+      <div class="form-section" id="videoDetailsSection">
+        <h2>Video Details</h2>
+        <div class="input-group">
+          <label for="productName">Product Name</label>
+          <input type="text" id="productName" name="productName" required>
         </div>
-
-        <div class="form-section">
-          <h2>Scoring Criteria</h2>
-          
-          <div class="input-group">
-            <label for="bgFgSeparation">Background-Foreground Separation</label>
-            <input type="number" id="bgFgSeparation" name="bgFgSeparation" min="0" max="10" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="brandAdherence">Brand Guideline Adherence</label>
-            <input type="number" id="brandAdherence" name="brandAdherence" min="0" max="10" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="creativity">Creativity & Visual Appeal</label>
-            <input type="number" id="creativity" name="creativity" min="0" max="10" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="productFocus">Product Focus</label>
-            <input type="number" id="productFocus" name="productFocus" min="0" max="10" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="ctaEffectiveness">CTA Effectiveness</label>
-            <input type="number" id="ctaEffectiveness" name="ctaEffectiveness" min="0" max="10" required>
-          </div>
-          
-          <div class="input-group">
-            <label for="audienceRelevance">Audience Relevance</label>
-            <input type="number" id="audienceRelevance" name="audienceRelevance" min="0" max="10" required>
-          </div>
+        
+        <div class="input-group">
+          <label for="tagline">Tagline</label>
+          <input type="text" id="tagline" name="tagline" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="brandPalette">Brand Palette</label>
+          <input type="text" id="brandPalette" name="brandPalette" placeholder="#FFFFFF, #000000">
+        </div>
+        
+        <div class="input-group">
+          <label for="dimensions">Dimensions</label>
+          <input type="text" id="dimensions" name="dimensions" value='{"width":1920,"height":1080}' required>
+        </div>
+        
+        <div class="input-group">
+          <label for="duration">Duration (seconds)</label>
+          <input type="number" id="duration" name="duration" min="1" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="ctaText">CTA Text</label>
+          <input type="text" id="ctaText" name="ctaText" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="logoUrl">Logo URL</label>
+          <input type="url" id="logoUrl" name="logoUrl" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="productVideoUrl">Product Video URL</label>
+          <input type="url" id="productVideoUrl" name="productVideoUrl" required>
+        </div>
+        
+        <div class="button-container">
+          <button type="button" id="nextBtn">Next: Scoring</button>
         </div>
       </div>
-      
-      <div class="button-container">
-        <button type="submit">Generate & Grade Video</button>
+
+      <div class="form-section hidden" id="scoringSection">
+        <h2>Scoring Criteria</h2>
+        <div class="input-group">
+          <label for="bgFgSeparation">Background-Foreground Separation (0-10)</label>
+          <input type="number" id="bgFgSeparation" name="bgFgSeparation" min="0" max="10" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="brandAdherence">Brand Guideline Adherence (0-10)</label>
+          <input type="number" id="brandAdherence" name="brandAdherence" min="0" max="10" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="creativity">Creativity & Visual Appeal (0-10)</label>
+          <input type="number" id="creativity" name="creativity" min="0" max="10" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="productFocus">Product Focus (0-10)</label>
+          <input type="number" id="productFocus" name="productFocus" min="0" max="10" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="ctaEffectiveness">CTA Effectiveness (0-10)</label>
+          <input type="number" id="ctaEffectiveness" name="ctaEffectiveness" min="0" max="10" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="audienceRelevance">Audience Relevance (0-10)</label>
+          <input type="number" id="audienceRelevance" name="audienceRelevance" min="0" max="10" required>
+        </div>
+        
+        <div class="button-container">
+          <button type="button" id="backBtn">Back to Details</button>
+          <button type="submit">Generate & Grade Video</button>
+        </div>
       </div>
     </form>
-    
-    <div id="result" class="result hidden">
-      <h2>Result</h2>
-      <p id="status"></p>
+
+    <div id="resultSection" class="result">
+      <h3>Result</h3>
+      <p><strong>Status:</strong> <span id="status"></span></p>
       <p><strong>Video URL:</strong> <a id="videoUrl" href="#" target="_blank"></a></p>
       <p><strong>Scoring:</strong> <span id="scoring"></span></p>
       <p><strong>Metadata:</strong> <span id="metadata"></span></p>
     </div>
   </div>
 
+  <div class="loading-overlay" id="loadingScreen">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <h2>Generating Video</h2>
+      <p>Stitching, compiling, and preparing your video. Please wait...</p>
+    </div>
+  </div>
+
   <script>
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      document.getElementById("videoDetailsSection").classList.add("hidden");
+      document.getElementById("scoringSection").classList.remove("hidden");
+    });
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      document.getElementById("scoringSection").classList.add("hidden");
+      document.getElementById("videoDetailsSection").classList.remove("hidden");
+    });
+
     document.getElementById("videoForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      // Show loading overlay
+      const loadingScreen = document.getElementById("loadingScreen");
+      loadingScreen.classList.add("visible");
+
+      const formData = new FormData(e.target);
       const videoRequest = {
         video_details: {
-          product_name: e.target.productName.value,
-          tagline: e.target.tagline.value,
-          brand_palette: e.target.brandPalette.value.split(",").map(c => c.trim()),
-          dimensions: JSON.parse(e.target.dimensions.value),
-          duration: parseInt(e.target.duration.value),
-          cta_text: e.target.ctaText.value,
-          logo_url: e.target.logoUrl.value,
-          product_video_url: e.target.productVideoUrl.value
+          product_name: formData.get("productName"),
+          tagline: formData.get("tagline"),
+          brand_palette: formData.get("brandPalette").split(",").map(c => c.trim()),
+          dimensions: JSON.parse(formData.get("dimensions")),
+          duration: parseInt(formData.get("duration")),
+          cta_text: formData.get("ctaText"),
+          logo_url: formData.get("logoUrl"),
+          product_video_url: formData.get("productVideoUrl")
         }
       };
 
       const videoGradingRequest = {
         file_url: "placeholder",
         scoring_criteria: {
-          background_foreground_separation: parseInt(e.target.bgFgSeparation.value),
-          brand_guideline_adherence: parseInt(e.target.brandAdherence.value),
-          creativity_visual_appeal: parseInt(e.target.creativity.value),
-          product_focus: parseInt(e.target.productFocus.value),
-          call_to_action: parseInt(e.target.ctaEffectiveness.value),
-          audience_relevance: parseInt(e.target.audienceRelevance.value)
+          background_foreground_separation: parseInt(formData.get("bgFgSeparation")),
+          brand_guideline_adherence: parseInt(formData.get("brandAdherence")),
+          creativity_visual_appeal: parseInt(formData.get("creativity")),
+          product_focus: parseInt(formData.get("productFocus")),
+          call_to_action: parseInt(formData.get("ctaEffectiveness")),
+          audience_relevance: parseInt(formData.get("audienceRelevance"))
         }
       };
 
@@ -307,14 +392,23 @@
         });
 
         const result = await response.json();
-        document.getElementById("status").innerText = result.status;
-        document.getElementById("videoUrl").innerText = result.video_url;
+        
+        // Update result section
+        document.getElementById("status").textContent = result.status;
+        document.getElementById("videoUrl").textContent = result.video_url;
         document.getElementById("videoUrl").href = result.video_url;
-        document.getElementById("scoring").innerText = JSON.stringify(result.scoring);
-        document.getElementById("metadata").innerText = JSON.stringify(result.metadata);
-        document.getElementById("result").classList.remove("hidden");
+        document.getElementById("scoring").textContent = result.scoring
+        document.getElementById("metadata").textContent = result.metadata;
+        console.log(result);
+
+        // Show result section
+        document.getElementById("resultSection").style.display = "block";
       } catch (error) {
-        alert("Error generating video. Please try again.");
+        console.error("Error generating video:", error);
+        alert("An error occurred while generating the video. Please try again.");
+      } finally {
+        // Hide loading screen
+        loadingScreen.classList.remove("visible");
       }
     });
   </script>
