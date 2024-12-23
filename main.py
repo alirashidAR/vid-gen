@@ -202,3 +202,8 @@ async def grade_video(request: VideoGradingRequest):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error grading video: {str(e)}")
+
+
+@app.get("/")
+async def read_root():
+    return {"message": "server is running"}
