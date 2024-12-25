@@ -287,33 +287,33 @@
       <div class="form-section hidden" id="scoringSection">
         <h2>Scoring Criteria</h2>
         <div class="input-group">
-          <label for="bgFgSeparation">Background-Foreground Separation (0-10)</label>
-          <input type="number" id="bgFgSeparation" name="bgFgSeparation" min="0" max="10" required>
+          <label for="bgFgSeparation">Background-Foreground Separation</label>
+          <input type="number" id="bgFgSeparation" name="bgFgSeparation" min="10"  required>
         </div>
         
         <div class="input-group">
-          <label for="brandAdherence">Brand Guideline Adherence (0-10)</label>
-          <input type="number" id="brandAdherence" name="brandAdherence" min="0" max="10" required>
+          <label for="brandAdherence">Brand Guideline Adherence</label>
+          <input type="number" id="brandAdherence" name="brandAdherence" min="10"  required>
         </div>
         
         <div class="input-group">
-          <label for="creativity">Creativity & Visual Appeal (0-10)</label>
-          <input type="number" id="creativity" name="creativity" min="0" max="10" required>
+          <label for="creativity">Creativity & Visual Appeal </label>
+          <input type="number" id="creativity" name="creativity" min="10"  required>
         </div>
         
         <div class="input-group">
-          <label for="productFocus">Product Focus (0-10)</label>
-          <input type="number" id="productFocus" name="productFocus" min="0" max="10" required>
+          <label for="productFocus">Product Focus</label>
+          <input type="number" id="productFocus" name="productFocus" min="10"  required>
         </div>
         
         <div class="input-group">
-          <label for="ctaEffectiveness">CTA Effectiveness (0-10)</label>
-          <input type="number" id="ctaEffectiveness" name="ctaEffectiveness" min="0" max="10" required>
+          <label for="ctaEffectiveness">CTA Effectiveness</label>
+          <input type="number" id="ctaEffectiveness" name="ctaEffectiveness" min="10"  required>
         </div>
         
         <div class="input-group">
-          <label for="audienceRelevance">Audience Relevance (0-10)</label>
-          <input type="number" id="audienceRelevance" name="audienceRelevance" min="0" max="10" required>
+          <label for="audienceRelevance">Audience Relevance</label>
+          <input type="number" id="audienceRelevance" name="audienceRelevance" min="10"  required>
         </div>
         
         <div class="button-container">
@@ -385,7 +385,7 @@
       };
 
       try {
-        const response = await fetch("http://3.110.196.232:8000/generate_video", {
+        const response = await fetch("http://localhost:8000/generate_video", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ video_request: videoRequest, video_grading_request: videoGradingRequest })
@@ -395,11 +395,12 @@
         
         // Update result section
         document.getElementById("status").textContent = result.status;
-        document.getElementById("videoUrl").textContent = result.video_url;
-        document.getElementById("videoUrl").href = result.video_url;
-        document.getElementById("scoring").textContent = result.scoring
-        document.getElementById("metadata").textContent = result.metadata;
-        console.log(result);
+          document.getElementById("videoUrl").textContent = result.video_url;
+          document.getElementById("videoUrl").href = result.video_url;
+          document.getElementById("scoring").textContent = JSON.stringify(result.scoring.grading_response[0], null, 2); 
+          document.getElementById("metadata").textContent = JSON.stringify(result.metadata, null, 2);
+          console.log(result);
+
 
         // Show result section
         document.getElementById("resultSection").style.display = "block";

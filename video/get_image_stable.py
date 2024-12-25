@@ -1,4 +1,3 @@
-import asyncio
 from huggingface_hub import InferenceClient
 import os
 import dotenv
