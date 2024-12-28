@@ -1,14 +1,17 @@
 import os
 import requests
+import dotenv
 
+dotenv.load_dotenv()
 
+PEXELS_API_KEY=os.getenv("PEXELS_API_KEY")
 
 async def fetch_and_download_media(query,path):
     # Define URLs and headers for Pexels API
     video_url = "https://api.pexels.com/videos/search"
     image_url = "https://api.pexels.com/v1/search"
     headers = {
-        "Authorization": "E2G2gl5kXzvn0iJWeFqixbm82lJMtE5NJoieVzmynk6lHSV0XVfWH30E"
+        "Authorization": PEXELS_API_KEY
     }
 
     # Fetch videos
