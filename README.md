@@ -32,8 +32,20 @@ This endpoint generates a product advertisement video by integrating various med
       "logo_url": "https://example.com/logo.png",
       "product_video_url": "https://example.com/product_video.mp4"
     }
+  },
+  "video_grading_request": {
+    "file_url": "https://example.com/submitted_video.mp4",
+    "scoring_criteria": {
+      "background_foreground_separation": 10,
+      "brand_guideline_adherence": 10,
+      "creativity_and_visual_appeal": 10,
+      "product_focus": 10,
+      "cta_effectiveness": 10,
+      "audience_relevance": 10
+    }
   }
 }
+
 ```
 
 #### Response:
