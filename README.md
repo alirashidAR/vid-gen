@@ -109,7 +109,7 @@ This endpoint evaluates a given video based on specified criteria and returns a 
 
 **Explanation of the Response:**
 
-- **grading_response**: The scoring results based on the grading criteria, with scores between 1 and 10 for each parameter.
+- **grading_response**: The scoring results based on the grading criteria, with scores between 1 to the set parameter
 
 ---
 
@@ -160,8 +160,8 @@ To set up the **Video Creative Generation and Scoring API** locally, follow thes
 1. Clone the repository and navigate to the project directory:
 
    ```bash
-   git clone https://github.com/your-username/video-creative-generation.git
-   cd video-creative-generation
+   git clone https://github.com/alirashidAR/onlinesales-hack
+   cd onlinesales-hack
    ```
 
 2. Set up the environment variables for your API keys and AWS credentials:
