@@ -9,7 +9,7 @@ from audio import audio_generation, get_video_details
 from video import get_image_stable, get_image_flux, get_videos_pexels
 from compilation import make_clip
 from dotenv import load_dotenv
-import httpx  # Use httpx for asynchronous requests
+import httpx  
 from fastapi.middleware.cors import CORSMiddleware
 from grading import grade
 
@@ -22,8 +22,6 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:8000",
-    "http://localhost:8000/generate_video",
-    "http://localhost:8000/grade_video",
     "*"
 ]
 
